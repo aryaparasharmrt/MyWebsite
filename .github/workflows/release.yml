@@ -28,7 +28,7 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          files: dist/*  # Adjust this line based on your project's structure
+          files: file1.txt
           tag_name: ${{ github.ref }}
           title: Release ${{ github.ref }}
 
@@ -39,7 +39,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: release-artifacts
-          path: dist/  # Adjust this line based on your project's structure
+          path: file1.txt
 
       - name: Deploy to production
         # Add your deployment steps here (e.g., deploy to a server or cloud service)
