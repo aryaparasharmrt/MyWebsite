@@ -38,7 +38,7 @@ jobs:
               prerelease: false
             });
           
-            console.log(response.data);
+            console.log(response.data)";
           })();
 
         env:
