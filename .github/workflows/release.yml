@@ -1,0 +1,47 @@
+name: Release Workflow
+
+on:
+  push:
+    tags:
+      - '*.*.*'  # Trigger on any tag push with the format X.Y.Z (e.g., 1.0.0)
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: git config --global user.email "aryaparasharj02@gmail.com" && git config --global user.name "GitHub Actions"
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt  # Adjust this line based on your project's dependency management
+
+      - name: Create release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*  # Adjust this line based on your project's structure
+          tag_name: ${{ github.ref }}
+          title: Release ${{ github.ref }}
+
+      - name: Extract release ID
+        run: echo "RELEASE_ID=${{ steps.create_release.outputs.id }}" >> $GITHUB_ENV
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-artifacts
+          path: dist/  # Adjust this line based on your project's structure
+
+      - name: Deploy to production
+        # Add your deployment steps here (e.g., deploy to a server or cloud service)
+        run: |
+          echo "Deploying Release ID $RELEASE_ID to production"
