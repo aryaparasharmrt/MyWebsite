@@ -28,7 +28,7 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          files: dist/*
+          files: file1.txt
           tag_name: ${{ github.ref }}
           title: Release ${{ github.ref }}
           token: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN }}
