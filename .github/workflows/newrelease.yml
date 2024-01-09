@@ -38,8 +38,10 @@ jobs:
               prerelease: false
             });
           
-            console.log(response.data)";
+            console.log(response.data);
           })();
 
+          console.log(response.data);" > create-release.js
+          node create-release.js
         env:
           GITHUB_TOKEN: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN }}
