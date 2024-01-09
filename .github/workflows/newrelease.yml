@@ -1,0 +1,42 @@
+name: Release Workflow
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: git config --global user.email "aryaparasharj02@gmail.com" && git config --global user.name "Arya Parashar"
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Create release
+        run: |
+          echo "const github = require('@actions/github');
+          const octokit = new github.GitHub(process.env.GITHUB_TOKEN);
+          const response = await octokit.repos.createRelease({
+            owner: '${{ github.repository_owner }}',
+            repo: '${{ github.repository }}',
+            tag_name: '${{ github.ref }}',
+            name: 'Release ${{ github.ref }}',
+            draft: false,
+            prerelease: false
+          });
+          console.log(response.data);" > create-release.js
+          node create-release.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN }}
