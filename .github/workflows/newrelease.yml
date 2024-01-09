@@ -28,15 +28,18 @@ jobs:
         run: |
           echo "const github = require('@actions/github');
           const octokit = new github.GitHub(process.env.GITHUB_TOKEN);
-          const response = await octokit.repos.createRelease({
-            owner: '${{ github.repository_owner }}',
-            repo: '${{ github.repository }}',
-            tag_name: '${{ github.ref }}',
-            name: 'Release ${{ github.ref }}',
-            draft: false,
-            prerelease: false
-          });
-          console.log(response.data);" > create-release.js
-          node create-release.js
+          (async () => {
+            const response = await octokit.repos.createRelease({
+              owner: '${{ github.repository_owner }}',
+              repo: '${{ github.repository }}',
+              tag_name: '${{ github.ref }}',
+              name: 'Release ${{ github.ref }}',
+              draft: false,
+              prerelease: false
+            });
+          
+            console.log(response.data);
+          })();
+
         env:
           GITHUB_TOKEN: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN }}
